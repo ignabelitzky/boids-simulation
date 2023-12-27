@@ -36,6 +36,15 @@ void initialise_boids(std::vector<Boid>& flock) {
     }
 }
 
+void initialise_fishes(std::vector<sf::CircleShape>& fishes, sf::Texture& texture) {
+    for(int i = 0; i < Config::NUM_BOIDS; ++i) {
+        sf::CircleShape circle(Config::BOID_RADIUS);
+        circle.setOrigin(circle.getRadius(), circle.getRadius());
+        circle.setTexture(&texture);
+        fishes.push_back(circle);
+    }
+}
+
 float magnitude(const std::pair<float, float>& v) {
     return std::sqrt(v.first * v.first + v.second * v.second);
 }
@@ -58,4 +67,10 @@ std::pair<float, float> limit(const std::pair<float, float>& v, float maxMagnitu
     } else {
         return v;
     }
+}
+
+std::pair<float, float>& operator+=(std::pair<float, float>& pair1, const std::pair<float, float>& pair2) {
+    pair1.first += pair2.first;
+    pair1.second += pair2.second;
+    return pair1;
 }

@@ -9,8 +9,6 @@ class Boid {
         std::pair<float, float> position;
         std::pair<float, float> velocity;
         std::pair<float, float> acceleration;
-        float maxSpeed;
-        float maxForce;
     public:
         Boid();
         Boid(const std::pair<float, float>& initialPosition, const std::pair<float, float>& initialVelocity, const std::pair<float, float>& initialAcceleration);

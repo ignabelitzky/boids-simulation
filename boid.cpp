@@ -8,8 +8,6 @@ Boid::Boid() {
 
 Boid::Boid(const std::pair<float, float>& initialPosition, const std::pair<float ,float>& initialVelocity, const std::pair<float, float>& initialAcceleration) :
     position(initialPosition), velocity(initialVelocity), acceleration(initialAcceleration) {
-        maxSpeed = 3.0f;
-        maxForce = 0.6f;
 }
 
 Boid::~Boid() {
@@ -45,18 +43,17 @@ void Boid::update() {
     position.second += velocity.second;
     velocity.first += acceleration.first;
     velocity.second += acceleration.second;
-    velocity = limit(velocity, maxSpeed);
+    velocity = limit(velocity, Config::MAX_SPEED);
     acceleration.first = 0.0f;
     acceleration.second = 0.0f;
 }
 
 std::pair<float, float> Boid::align(std::vector<Boid>& boids) {
-    float perceptionRadius = 50.0f;
     std::pair<float, float> steering(0.0f, 0.0f);
     int total = 0;
     for(size_t i = 0; i < boids.size(); ++i) {
         float distance = calculate_distance(position, boids[i].getPosition());
-        if(distance > 0.05 && distance < perceptionRadius) {
+        if(distance > Config::MIN_DISTANCE && distance < Config::PERCEPTION_RADIUS) {
             steering.first += boids[i].getVelocity().first;
             steering.second += boids[i].getVelocity().second;
             ++total;
@@ -65,21 +62,20 @@ std::pair<float, float> Boid::align(std::vector<Boid>& boids) {
     if(total > 0) {
         steering.first /= total;
         steering.second /= total;
-        steering = setMag(steering, maxSpeed);
+        steering = setMag(steering, Config::MAX_SPEED);
         steering.first -= velocity.first;
         steering.second -= velocity.second;
-        steering = limit(steering, maxForce);
+        steering = limit(steering, Config::MAX_FORCE);
     }
     return steering;
 }
 
 std::pair<float, float> Boid::cohesion(std::vector<Boid>& boids) {
-    float perceptionRadius = 50.0f;
     std::pair<float, float> steering(0.0f, 0.0f);
     int total = 0;
     for(size_t i = 0; i < boids.size(); ++i) {
         float distance = calculate_distance(position, boids[i].getPosition());
-        if(distance > 0.05 && distance < perceptionRadius) {
+        if(distance > Config::MIN_DISTANCE && distance < Config::PERCEPTION_RADIUS) {
             steering.first += boids[i].getPosition().first;
             steering.second += boids[i].getPosition().second;
             ++total;
@@ -90,21 +86,20 @@ std::pair<float, float> Boid::cohesion(std::vector<Boid>& boids) {
         steering.second /= total;
         steering.first -= position.first;
         steering.second -= position.second;
-        steering = setMag(steering, maxSpeed);
+        steering = setMag(steering, Config::MAX_SPEED);
         steering.first -= velocity.first;
         steering.second -= velocity.second;
-        steering = limit(steering, maxForce);
+        steering = limit(steering, Config::MAX_FORCE);
     }
     return steering;
 }
 
 std::pair<float, float> Boid::separation(std::vector<Boid>& boids) {
-    float perceptionRadius = 50.0f;
     std::pair<float, float> steering(0.0f, 0.0f);
     int total = 0;
     for(size_t i = 0; i < boids.size(); ++i) {
         float distance = calculate_distance(position, boids[i].getPosition());
-        if(distance > 0.05 && distance < perceptionRadius) {
+        if(distance > Config::MIN_DISTANCE && distance < Config::PERCEPTION_RADIUS) {
             std::pair<float, float> diff = std::make_pair(position.first - boids[i].getPosition().first, position.second - boids[i].getPosition().second);
             diff.first /= distance;
             diff.second /= distance;
@@ -116,10 +111,10 @@ std::pair<float, float> Boid::separation(std::vector<Boid>& boids) {
     if(total > 0) {
         steering.first /= total;
         steering.second /= total;
-        steering = setMag(steering, maxSpeed);
+        steering = setMag(steering, Config::MAX_SPEED);
         steering.first -= velocity.first;
         steering.second -= velocity.second;
-        steering = limit(steering, maxForce);
+        steering = limit(steering, Config::MAX_FORCE);
     }
     return steering;
 }
