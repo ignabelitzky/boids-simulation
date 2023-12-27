@@ -28,6 +28,8 @@ class Boid {
 
         void update();
         std::pair<float, float> align(std::vector<Boid>& boids);
+        std::pair<float, float> cohesion(std::vector<Boid>& boids);
+        std::pair<float, float> separation(std::vector<Boid>& boids);
         void flock(std::vector<Boid>& boids);
         void edges();
 };
