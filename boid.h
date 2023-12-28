@@ -9,14 +9,15 @@ class Boid {
         std::pair<float, float> position;
         std::pair<float, float> velocity;
         std::pair<float, float> acceleration;
+        float perceptionRadius;
         float alignSpeed;
         float alignForce;
         float cohesionSpeed;
         float cohesionForce;
         float separationSpeed;
         float separationForce;
+        float updateSpeed;
     public:
-        Boid();
         Boid(const std::pair<float, float>& initialPosition, const std::pair<float, float>& initialVelocity, const std::pair<float, float>& initialAcceleration);
         ~Boid();
 
@@ -24,6 +25,7 @@ class Boid {
         std::pair<float, float> getPosition() const;
         std::pair<float, float> getVelocity() const;
         std::pair<float, float> getAcceleration() const;
+        float getPerceptionRadius() const;
         float getAlignSpeed() const;
         float getAlignForce() const;
         float getCohesionSpeed() const;
@@ -35,6 +37,7 @@ class Boid {
         void setPosition(const std::pair<float, float>& newPosition);
         void setVelocity(const std::pair<float, float>& newVelocity);
         void setAcceleration(const std::pair<float, float>& newAcceleration);
+        void setPerceptionRadius(float radius);
         void setAlignSpeed(float speed);
         void setAlignForce(float force);
         void setCohesionSpeed(float speed);

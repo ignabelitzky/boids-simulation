@@ -24,6 +24,8 @@ void changeCohesionForce(float value, std::vector<Boid>& boids);
 
 void changeSeparationForce(float value, std::vector<Boid>& boids);
 
+void changePerceptionRadius(float value, std::vector<Boid>& boids);
+
 void initialise_boids(std::vector<Boid>& boids);
 
 void initialise_fishes(std::vector<sf::CircleShape>& fishes, sf::Texture& texture);

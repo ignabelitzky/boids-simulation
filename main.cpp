@@ -15,9 +15,11 @@ void update(std::vector<Boid>& flock) {
     }
 }
 
-void render(sf::RenderWindow& window, std::vector<Boid>& flock, std::vector<sf::CircleShape>& fishes, std::vector<Slider>& sliders, std::vector<sf::Text>& texts) {
+void render(sf::RenderWindow& window, sf::Sprite& background, std::vector<Boid>& flock, std::vector<sf::CircleShape>& fishes, std::vector<Slider>& sliders, std::vector<sf::Text>& texts) {
     // Clear the window
     window.clear(sf::Color::Blue);
+
+    window.draw(background);
     
     for(int i = 0; i < Config::NUM_BOIDS; ++i) {
         float angle = std::atan2(flock[i].getVelocity().second, flock[i].getVelocity().first) * 180.0f / M_PI;
@@ -43,6 +45,13 @@ int main() {
         std::cout << "Error loading fish image!" << std::endl;
     }
 
+    sf::Texture backgroundTexture;
+    if(!backgroundTexture.loadFromFile("./resources/images/sea.jpg")) {
+        std::cout << "Error loading background image!" << std::endl;
+    }
+
+    sf::Sprite backgroundImage(backgroundTexture);
+
     sf::Font font;
     if(!font.loadFromFile("./resources/fonts/arial/arial_bold.ttf")) {
         std::cout << "Error loading font!" << std::endl;
@@ -62,6 +71,12 @@ int main() {
     sf::Clock clock;
     sf::Time elapsedTime = sf::Time::Zero;
 
+    sf::Vector2u windowSize = window.getSize();
+
+    float scaleX = static_cast<float>(windowSize.x) / backgroundTexture.getSize().x;
+    float scaleY = static_cast<float>(windowSize.y) / backgroundTexture.getSize().y;
+    backgroundImage.setScale(scaleX, scaleY);
+
     while(window.isOpen()) {
         sf::Event event;
         while(window.pollEvent(event)) {
@@ -79,7 +94,7 @@ int main() {
             update(flock);
         }
         // Render at every iteration
-        render(window, flock, fishes, sliders, texts);
+        render(window, backgroundImage, flock, fishes, sliders, texts);
     }
     return 0;
 }

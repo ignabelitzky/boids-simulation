@@ -2,18 +2,16 @@
 #include "utils.h"
 #include "params.h"
 
-Boid::Boid() {
-
-}
-
 Boid::Boid(const std::pair<float, float>& initialPosition, const std::pair<float ,float>& initialVelocity, const std::pair<float, float>& initialAcceleration) :
     position(initialPosition), velocity(initialVelocity), acceleration(initialAcceleration) {
+        perceptionRadius = 75.0f;
         alignSpeed = 3.0f;
         cohesionSpeed = 3.0f;
         separationSpeed = 3.0f;
         alignForce = 0.6f;
         cohesionForce = 0.6f;
         separationForce = 0.6f;
+        updateSpeed = 3.0f;
 }
 
 Boid::~Boid() {
@@ -30,6 +28,10 @@ std::pair<float, float> Boid::getVelocity() const {
 
 std::pair<float, float> Boid::getAcceleration() const {
     return acceleration;
+}
+
+float Boid::getPerceptionRadius() const {
+    return perceptionRadius;
 }
 
 float Boid::getAlignSpeed() const {
@@ -54,6 +56,10 @@ float Boid::getSeparationSpeed() const {
 
 float Boid::getSeparationForce() const {
     return separationForce;
+}
+
+void Boid::setPerceptionRadius(float radius) {
+    perceptionRadius = radius;
 }
 
 void Boid::setPosition(const std::pair<float, float>& newPosition) {
@@ -97,7 +103,7 @@ void Boid::update() {
     position.second += velocity.second;
     velocity.first += acceleration.first;
     velocity.second += acceleration.second;
-    velocity = limit(velocity, Config::MAX_SPEED);
+    velocity = limit(velocity, updateSpeed);
     acceleration.first = 0.0f;
     acceleration.second = 0.0f;
 }
@@ -107,7 +113,7 @@ std::pair<float, float> Boid::align(std::vector<Boid>& boids) {
     int total = 0;
     for(size_t i = 0; i < boids.size(); ++i) {
         float distance = calculate_distance(position, boids[i].getPosition());
-        if(distance > Config::MIN_DISTANCE && distance < Config::PERCEPTION_RADIUS) {
+        if(distance > Config::MIN_DISTANCE && distance < perceptionRadius) {
             steering.first += boids[i].getVelocity().first;
             steering.second += boids[i].getVelocity().second;
             ++total;
@@ -129,7 +135,7 @@ std::pair<float, float> Boid::cohesion(std::vector<Boid>& boids) {
     int total = 0;
     for(size_t i = 0; i < boids.size(); ++i) {
         float distance = calculate_distance(position, boids[i].getPosition());
-        if(distance > Config::MIN_DISTANCE && distance < Config::PERCEPTION_RADIUS) {
+        if(distance > Config::MIN_DISTANCE && distance < perceptionRadius) {
             steering.first += boids[i].getPosition().first;
             steering.second += boids[i].getPosition().second;
             ++total;
@@ -153,7 +159,7 @@ std::pair<float, float> Boid::separation(std::vector<Boid>& boids) {
     int total = 0;
     for(size_t i = 0; i < boids.size(); ++i) {
         float distance = calculate_distance(position, boids[i].getPosition());
-        if(distance > Config::MIN_DISTANCE && distance < Config::PERCEPTION_RADIUS) {
+        if(distance > Config::MIN_DISTANCE && distance < perceptionRadius) {
             std::pair<float, float> diff = std::make_pair(position.first - boids[i].getPosition().first, position.second - boids[i].getPosition().second);
             diff.first /= distance;
             diff.second /= distance;

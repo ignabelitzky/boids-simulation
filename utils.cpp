@@ -57,6 +57,12 @@ void changeSeparationForce(float value, std::vector<Boid>& boids) {
     }
 }
 
+void changePerceptionRadius(float value, std::vector<Boid>& boids) {
+    for(size_t i = 0; i < boids.size(); ++i) {
+        boids[i].setPerceptionRadius(value);
+    }
+}
+
 void initialise_boids(std::vector<Boid>& flock) {
     for(int i = 0; i < Config::NUM_BOIDS; ++i) {
         float xPosition = generate_random_float(0.0f, static_cast<float>(Config::WINDOW_WIDTH));
@@ -106,32 +112,40 @@ void initialise_sliders(std::vector<Boid>& boids, std::vector<Slider>& sliders) 
     Slider separationForceSlider(0.1f, 1.0f, 0.5, sf::Vector2f(240, 250), 200, boids);
     separationForceSlider.setValueChangedCallback(changeSeparationForce);
     sliders.push_back(separationForceSlider);
+
+    Slider perceptionRadiusSlider(10.0f, 150.0f, 75.0f, sf::Vector2f(460, 50), 200, boids);
+    perceptionRadiusSlider.setValueChangedCallback(changePerceptionRadius);
+    sliders.push_back(perceptionRadiusSlider);
 }
 
 void initialise_texts(sf::Font& font, std::vector<sf::Text>& texts) {
     sf::Text alignSpeedText("Align Speed", font, 20);
-    alignSpeedText.setFillColor(sf::Color::White);
+    alignSpeedText.setFillColor(sf::Color::Yellow);
     alignSpeedText.setPosition(20, 10);
 
     sf::Text cohesionSpeedText("Cohesion Speed", font, 20);
-    cohesionSpeedText.setFillColor(sf::Color::White);
+    cohesionSpeedText.setFillColor(sf::Color::Yellow);
     cohesionSpeedText.setPosition(20, 110);
 
     sf::Text separationSpeedText("Separation Speed", font, 20);
-    separationSpeedText.setFillColor(sf::Color::White);
+    separationSpeedText.setFillColor(sf::Color::Yellow);
     separationSpeedText.setPosition(20, 210);
 
     sf::Text alignForceText("Align Force", font, 20);
-    alignForceText.setFillColor(sf::Color::White);
+    alignForceText.setFillColor(sf::Color::Yellow);
     alignForceText.setPosition(240, 10);
 
     sf::Text cohesionForceText("Cohesion Force", font, 20);
-    cohesionForceText.setFillColor(sf::Color::White);
+    cohesionForceText.setFillColor(sf::Color::Yellow);
     cohesionForceText.setPosition(240, 110);
 
     sf::Text separationForceText("Separation Force", font, 20);
-    separationForceText.setFillColor(sf::Color::White);
+    separationForceText.setFillColor(sf::Color::Yellow);
     separationForceText.setPosition(240, 210);
+
+    sf::Text perceptionRadiusText("Perception Radius", font, 20);
+    perceptionRadiusText.setFillColor(sf::Color::Yellow);
+    perceptionRadiusText.setPosition(460, 10);
 
     texts.push_back(alignSpeedText);
     texts.push_back(cohesionSpeedText);
@@ -139,6 +153,7 @@ void initialise_texts(sf::Font& font, std::vector<sf::Text>& texts) {
     texts.push_back(alignForceText);
     texts.push_back(cohesionForceText);
     texts.push_back(separationForceText);
+    texts.push_back(perceptionRadiusText);
 }
 
 float magnitude(const std::pair<float, float>& v) {
