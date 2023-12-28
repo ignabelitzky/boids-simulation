@@ -20,6 +20,42 @@ float calculate_distance(std::pair<float, float> fstPosition, std::pair<float, f
     return std::sqrt(std::pow(sndPosition.first - fstPosition.first, 2) + std::pow(sndPosition.second - fstPosition.second, 2));
 }
 
+void changeAlignSpeed(float value, std::vector<Boid>& boids) {
+    for(size_t i = 0; i < boids.size(); ++i) {
+        boids[i].setAlignSpeed(value);
+    }
+}
+
+void changeCohesionSpeed(float value, std::vector<Boid>& boids) {
+    for(size_t i = 0; i < boids.size(); ++i) {
+        boids[i].setCohesionSpeed(value);
+    }
+}
+
+void changeSeparationSpeed(float value, std::vector<Boid>& boids) {
+    for(size_t i = 0; i < boids.size(); ++i) {
+        boids[i].setSeparationSpeed(value);
+    }
+}
+
+void changeAlignForce(float value, std::vector<Boid>& boids) {
+    for(size_t i = 0; i < boids.size(); ++i) {
+        boids[i].setAlignForce(value);
+    }
+}
+
+void changeCohesionForce(float value, std::vector<Boid>& boids) {
+    for(size_t i = 0; i < boids.size(); ++i) {
+        boids[i].setCohesionForce(value);
+    }
+}
+
+void changeSeparationForce(float value, std::vector<Boid>& boids) {
+    for(size_t i = 0; i < boids.size(); ++i) {
+        boids[i].setSeparationForce(value);
+    }
+}
+
 void initialise_boids(std::vector<Boid>& flock) {
     for(int i = 0; i < Config::NUM_BOIDS; ++i) {
         float xPosition = generate_random_float(0.0f, static_cast<float>(Config::WINDOW_WIDTH));
@@ -43,6 +79,32 @@ void initialise_fishes(std::vector<sf::CircleShape>& fishes, sf::Texture& textur
         circle.setTexture(&texture);
         fishes.push_back(circle);
     }
+}
+
+void initialise_sliders(std::vector<Boid>& boids, std::vector<Slider>& sliders) {
+    Slider alignSpeedSlider(1, 10, 3, sf::Vector2f(50, 200), 200, boids);
+    alignSpeedSlider.setValueChangedCallback(changeAlignSpeed);
+    sliders.push_back(alignSpeedSlider);
+
+    Slider cohesionSpeedSlider(1, 10, 3, sf::Vector2f(50, 300), 200, boids);
+    cohesionSpeedSlider.setValueChangedCallback(changeCohesionSpeed);
+    sliders.push_back(cohesionSpeedSlider);
+
+    Slider separationSpeedSlider(1, 10, 3, sf::Vector2f(50, 400), 200, boids);
+    separationSpeedSlider.setValueChangedCallback(changeSeparationSpeed);
+    sliders.push_back(separationSpeedSlider);
+
+    Slider alignForceSlider(0.1f, 1.0f, 0.5f, sf::Vector2f(50, 500), 200, boids);
+    alignForceSlider.setValueChangedCallback(changeAlignForce);
+    sliders.push_back(alignForceSlider);
+
+    Slider cohesionForceSlider(0.1f, 1.0f, 0.5f, sf::Vector2f(50, 600), 200, boids);
+    cohesionForceSlider.setValueChangedCallback(changeCohesionForce);
+    sliders.push_back(cohesionForceSlider);
+
+    Slider separationForceSlider(0.1f, 1.0f, 0.5, sf::Vector2f(50, 700), 200, boids);
+    separationForceSlider.setValueChangedCallback(changeSeparationForce);
+    sliders.push_back(separationForceSlider);
 }
 
 float magnitude(const std::pair<float, float>& v) {

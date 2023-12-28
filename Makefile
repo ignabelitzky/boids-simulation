@@ -4,7 +4,7 @@ SFML_LIBS := -lsfml-graphics -lsfml-window -lsfml-system
 
 TARGET := boids
 
-SRC := main.cpp utils.cpp boid.cpp
+SRC := main.cpp utils.cpp boid.cpp slider.cpp
 OBJ := $(SRC:.cpp=.o)
 
 all: $(TARGET)

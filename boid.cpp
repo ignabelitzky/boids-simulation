@@ -8,6 +8,12 @@ Boid::Boid() {
 
 Boid::Boid(const std::pair<float, float>& initialPosition, const std::pair<float ,float>& initialVelocity, const std::pair<float, float>& initialAcceleration) :
     position(initialPosition), velocity(initialVelocity), acceleration(initialAcceleration) {
+        alignSpeed = 3.0f;
+        cohesionSpeed = 3.0f;
+        separationSpeed = 3.0f;
+        alignForce = 0.6f;
+        cohesionForce = 0.6f;
+        separationForce = 0.6f;
 }
 
 Boid::~Boid() {
@@ -26,6 +32,30 @@ std::pair<float, float> Boid::getAcceleration() const {
     return acceleration;
 }
 
+float Boid::getAlignSpeed() const {
+    return alignSpeed;
+}
+
+float Boid::getAlignForce() const {
+    return alignForce;
+}
+
+float Boid::getCohesionSpeed() const {
+    return cohesionSpeed;
+}
+
+float Boid::getCohesionForce() const {
+    return cohesionForce;
+}
+
+float Boid::getSeparationSpeed() const {
+    return separationSpeed;
+}
+
+float Boid::getSeparationForce() const {
+    return separationForce;
+}
+
 void Boid::setPosition(const std::pair<float, float>& newPosition) {
     position = newPosition;
 }
@@ -36,6 +66,30 @@ void Boid::setVelocity(const std::pair<float, float>& newVelocity) {
 
 void Boid::setAcceleration(const std::pair<float, float>& newAcceleration) {
     acceleration = newAcceleration;
+}
+
+void Boid::setAlignSpeed(float speed) {
+    alignSpeed = speed;
+}
+
+void Boid::setAlignForce(float force) {
+    alignForce = force;
+}
+
+void Boid::setCohesionSpeed(float speed) {
+    cohesionSpeed = speed;
+}
+
+void Boid::setCohesionForce(float force) {
+    cohesionForce = force;
+}
+
+void Boid::setSeparationSpeed(float speed) {
+    separationSpeed = speed;
+}
+
+void Boid::setSeparationForce(float force) {
+    separationForce = force;
 }
 
 void Boid::update() {
@@ -62,10 +116,10 @@ std::pair<float, float> Boid::align(std::vector<Boid>& boids) {
     if(total > 0) {
         steering.first /= total;
         steering.second /= total;
-        steering = setMag(steering, Config::MAX_SPEED);
+        steering = setMag(steering, alignSpeed);
         steering.first -= velocity.first;
         steering.second -= velocity.second;
-        steering = limit(steering, Config::MAX_FORCE);
+        steering = limit(steering, alignForce);
     }
     return steering;
 }
@@ -86,10 +140,10 @@ std::pair<float, float> Boid::cohesion(std::vector<Boid>& boids) {
         steering.second /= total;
         steering.first -= position.first;
         steering.second -= position.second;
-        steering = setMag(steering, Config::MAX_SPEED);
+        steering = setMag(steering, cohesionSpeed);
         steering.first -= velocity.first;
         steering.second -= velocity.second;
-        steering = limit(steering, Config::MAX_FORCE);
+        steering = limit(steering, cohesionForce);
     }
     return steering;
 }
@@ -111,10 +165,10 @@ std::pair<float, float> Boid::separation(std::vector<Boid>& boids) {
     if(total > 0) {
         steering.first /= total;
         steering.second /= total;
-        steering = setMag(steering, Config::MAX_SPEED);
+        steering = setMag(steering, separationSpeed);
         steering.first -= velocity.first;
         steering.second -= velocity.second;
-        steering = limit(steering, Config::MAX_FORCE);
+        steering = limit(steering, separationForce);
     }
     return steering;
 }
