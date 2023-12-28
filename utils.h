@@ -30,6 +30,8 @@ void initialise_fishes(std::vector<sf::CircleShape>& fishes, sf::Texture& textur
 
 void initialise_sliders(std::vector<Boid>& boids, std::vector<Slider>& sliders);
 
+void initialise_texts(sf::Font& font, std::vector<sf::Text>& texts);
+
 float magnitude(const std::pair<float, float>& v);
 
 std::pair<float, float> setMag(const std::pair<float, float>& v, float newMagnitude);

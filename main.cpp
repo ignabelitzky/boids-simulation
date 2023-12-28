@@ -15,17 +15,23 @@ void update(std::vector<Boid>& flock) {
     }
 }
 
-void render(sf::RenderWindow& window, std::vector<Boid>& flock, std::vector<sf::CircleShape>& fishes, std::vector<Slider>& sliders) {
+void render(sf::RenderWindow& window, std::vector<Boid>& flock, std::vector<sf::CircleShape>& fishes, std::vector<Slider>& sliders, std::vector<sf::Text>& texts) {
     // Clear the window
     window.clear(sf::Color::Blue);
+    
     for(int i = 0; i < Config::NUM_BOIDS; ++i) {
         float angle = std::atan2(flock[i].getVelocity().second, flock[i].getVelocity().first) * 180.0f / M_PI;
         fishes[i].setPosition(flock.at(i).getPosition().first, flock.at(i).getPosition().second);
         fishes[i].setRotation(angle);
         window.draw(fishes[i]);
     }
+
     for(size_t i = 0; i < sliders.size(); ++i)
         sliders[i].draw(window);
+
+    for(size_t i = 0; i < texts.size(); ++i)
+        window.draw(texts[i]);
+    
     window.display();
 }
 
@@ -34,16 +40,23 @@ int main() {
 
     sf::Texture texture;
     if(!texture.loadFromFile("./resources/images/fish.png")) {
-        std::cout << "Error loading fish image!";
+        std::cout << "Error loading fish image!" << std::endl;
+    }
+
+    sf::Font font;
+    if(!font.loadFromFile("./resources/fonts/arial/arial_bold.ttf")) {
+        std::cout << "Error loading font!" << std::endl;
     }
 
     // Initialise boids
     std::vector<Boid> flock;
     std::vector<sf::CircleShape> fishes;
     std::vector<Slider> sliders;
+    std::vector<sf::Text> texts;
     initialise_boids(flock);
     initialise_fishes(fishes, texture);
     initialise_sliders(flock, sliders);
+    initialise_texts(font, texts);
 
     sf::RenderWindow window(sf::VideoMode(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT), "Boids Simulation by Ignacio Belitzky");
     sf::Clock clock;
@@ -66,7 +79,7 @@ int main() {
             update(flock);
         }
         // Render at every iteration
-        render(window, flock, fishes, sliders);
+        render(window, flock, fishes, sliders, texts);
     }
     return 0;
 }

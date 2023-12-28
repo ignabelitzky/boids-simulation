@@ -1,4 +1,5 @@
 #include <random>
+#include <iostream>
 #include "utils.h"
 #include "params.h"
 
@@ -82,29 +83,62 @@ void initialise_fishes(std::vector<sf::CircleShape>& fishes, sf::Texture& textur
 }
 
 void initialise_sliders(std::vector<Boid>& boids, std::vector<Slider>& sliders) {
-    Slider alignSpeedSlider(1, 10, 3, sf::Vector2f(50, 200), 200, boids);
+    Slider alignSpeedSlider(1, 10, 3, sf::Vector2f(20, 50), 200, boids);
     alignSpeedSlider.setValueChangedCallback(changeAlignSpeed);
     sliders.push_back(alignSpeedSlider);
 
-    Slider cohesionSpeedSlider(1, 10, 3, sf::Vector2f(50, 300), 200, boids);
+    Slider cohesionSpeedSlider(1, 10, 3, sf::Vector2f(20, 150), 200, boids);
     cohesionSpeedSlider.setValueChangedCallback(changeCohesionSpeed);
     sliders.push_back(cohesionSpeedSlider);
 
-    Slider separationSpeedSlider(1, 10, 3, sf::Vector2f(50, 400), 200, boids);
+    Slider separationSpeedSlider(1, 10, 3, sf::Vector2f(20, 250), 200, boids);
     separationSpeedSlider.setValueChangedCallback(changeSeparationSpeed);
     sliders.push_back(separationSpeedSlider);
 
-    Slider alignForceSlider(0.1f, 1.0f, 0.5f, sf::Vector2f(50, 500), 200, boids);
+    Slider alignForceSlider(0.1f, 1.0f, 0.5f, sf::Vector2f(240, 50), 200, boids);
     alignForceSlider.setValueChangedCallback(changeAlignForce);
     sliders.push_back(alignForceSlider);
 
-    Slider cohesionForceSlider(0.1f, 1.0f, 0.5f, sf::Vector2f(50, 600), 200, boids);
+    Slider cohesionForceSlider(0.1f, 1.0f, 0.5f, sf::Vector2f(240, 150), 200, boids);
     cohesionForceSlider.setValueChangedCallback(changeCohesionForce);
     sliders.push_back(cohesionForceSlider);
 
-    Slider separationForceSlider(0.1f, 1.0f, 0.5, sf::Vector2f(50, 700), 200, boids);
+    Slider separationForceSlider(0.1f, 1.0f, 0.5, sf::Vector2f(240, 250), 200, boids);
     separationForceSlider.setValueChangedCallback(changeSeparationForce);
     sliders.push_back(separationForceSlider);
+}
+
+void initialise_texts(sf::Font& font, std::vector<sf::Text>& texts) {
+    sf::Text alignSpeedText("Align Speed", font, 20);
+    alignSpeedText.setFillColor(sf::Color::White);
+    alignSpeedText.setPosition(20, 10);
+
+    sf::Text cohesionSpeedText("Cohesion Speed", font, 20);
+    cohesionSpeedText.setFillColor(sf::Color::White);
+    cohesionSpeedText.setPosition(20, 110);
+
+    sf::Text separationSpeedText("Separation Speed", font, 20);
+    separationSpeedText.setFillColor(sf::Color::White);
+    separationSpeedText.setPosition(20, 210);
+
+    sf::Text alignForceText("Align Force", font, 20);
+    alignForceText.setFillColor(sf::Color::White);
+    alignForceText.setPosition(240, 10);
+
+    sf::Text cohesionForceText("Cohesion Force", font, 20);
+    cohesionForceText.setFillColor(sf::Color::White);
+    cohesionForceText.setPosition(240, 110);
+
+    sf::Text separationForceText("Separation Force", font, 20);
+    separationForceText.setFillColor(sf::Color::White);
+    separationForceText.setPosition(240, 210);
+
+    texts.push_back(alignSpeedText);
+    texts.push_back(cohesionSpeedText);
+    texts.push_back(separationSpeedText);
+    texts.push_back(alignForceText);
+    texts.push_back(cohesionForceText);
+    texts.push_back(separationForceText);
 }
 
 float magnitude(const std::pair<float, float>& v) {
