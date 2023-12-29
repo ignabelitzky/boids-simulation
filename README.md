@@ -1,7 +1,8 @@
 # Boids Simulation in C++ with SFML
 
-[![License](https://shields.io/badge/license-GNU%20General%20Public%20License%20v3.0-green)](LICENSE)
+[![License](https://shields.io/badge/License-GNU%20General%20Public%20License%20v3.0-green)](LICENSE)
 [![SFML](https://img.shields.io/badge/SFML-2.6-brightgreen.svg)](https://www.sfml-dev.org/)
+[![Linux](https://img.shields.io/badge/Platform-Linux-blue.svg)](https://www.linux.org/)
 
 ## Overview
 
